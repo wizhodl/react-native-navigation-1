@@ -1,5 +1,6 @@
 const React = require('react');
 const {Component} = require('react');
+import {Platform} from 'react-native';
 const Root = require('../components/Root');
 const Button = require('../components/Button')
 const Navigation = require('../services/Navigation');
@@ -8,6 +9,8 @@ const {
   CHANGE_TITLE_BTN,
   HIDE_TOP_BAR_BTN,
   SHOW_TOP_BAR_BTN,
+  HIDE_ANDROID_NAVIGATION_BAR_BTN,
+  SHOW_ANDROID_NAVIGATION_BAR_BTN,
   TOP_BAR,
   PUSH_BTN,
   HIDE_TOPBAR_DEFAULT_OPTIONS,
@@ -36,6 +39,14 @@ class Options extends Component {
         <Button label='Change title' testID={CHANGE_TITLE_BTN} onPress={this.changeTitle} />
         <Button label='Hide TopBar' testID={HIDE_TOP_BAR_BTN} onPress={this.hideTopBar} />
         <Button label='Show TopBar' testID={SHOW_TOP_BAR_BTN} onPress={this.showTopBar} />
+        {
+          Platform.OS === 'android' &&
+          <Button label='Hide Android Navigation Bar' testID={HIDE_ANDROID_NAVIGATION_BAR_BTN} onPress={this.hideAndroidNavigationBar} />
+        }
+        {
+          Platform.OS === 'android' &&
+          <Button label='Show Android Navigation Bar' testID={SHOW_ANDROID_NAVIGATION_BAR_BTN} onPress={this.showAndroidNavigationBar} />
+        }
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
         <Button label='Hide TopBar in DefaultOptions' testID={HIDE_TOPBAR_DEFAULT_OPTIONS} onPress={this.hideTopBarInDefaultOptions} />
         <Button label='Set React Title View' testID={SET_REACT_TITLE_VIEW} onPress={this.setReactTitleView} />
@@ -63,6 +74,18 @@ class Options extends Component {
 
   showTopBar = () => Navigation.mergeOptions(this, {
     topBar: {
+      visible: true
+    }
+  });
+
+  hideAndroidNavigationBar = () => Navigation.mergeOptions(this, {
+    navigationBar: {
+      visible: false
+    }
+  });
+
+  showAndroidNavigationBar = () => Navigation.mergeOptions(this, {
+    navigationBar: {
       visible: true
     }
   });
