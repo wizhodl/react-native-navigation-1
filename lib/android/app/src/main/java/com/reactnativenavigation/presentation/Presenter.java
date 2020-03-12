@@ -210,9 +210,7 @@ public class Presenter {
             int flags = decorView.getSystemUiVisibility();
             boolean defaultVisibility = (flags & View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION) == 0;
             boolean visible = navigationBar.isVisible.get(defaultVisibility);
-            int hideNavigationBarFlags = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            int hideNavigationBarFlags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
             if (visible) {
                 flags &= ~hideNavigationBarFlags;
