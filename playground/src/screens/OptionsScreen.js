@@ -33,7 +33,12 @@ class Options extends Component {
     };
   }
 
+  state = {
+    isAndroidNavigationBarVisible: true
+  };
+
   render() {
+    const {isAndroidNavigationBarVisible} = this.state;
     return (
       <Root componentId={this.props.componentId}>
         <Button label='Change title' testID={CHANGE_TITLE_BTN} onPress={this.changeTitle} />
@@ -41,11 +46,11 @@ class Options extends Component {
         <Button label='Show TopBar' testID={SHOW_TOP_BAR_BTN} onPress={this.showTopBar} />
         {
           Platform.OS === 'android' &&
-          <Button label='Hide Android Navigation Bar' testID={HIDE_ANDROID_NAVIGATION_BAR_BTN} onPress={this.hideAndroidNavigationBar} />
-        }
-        {
-          Platform.OS === 'android' &&
-          <Button label='Show Android Navigation Bar' testID={SHOW_ANDROID_NAVIGATION_BAR_BTN} onPress={this.showAndroidNavigationBar} />
+          <Button
+            label={`${isAndroidNavigationBarVisible ? 'Hide' : 'Show'} Android Navigation Bar`}
+            testID={isAndroidNavigationBarVisible ? HIDE_ANDROID_NAVIGATION_BAR_BTN : SHOW_ANDROID_NAVIGATION_BAR_BTN}
+            onPress={this.toggleAndroidNavigationBar}
+          />
         }
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
         <Button label='Hide TopBar in DefaultOptions' testID={HIDE_TOPBAR_DEFAULT_OPTIONS} onPress={this.hideTopBarInDefaultOptions} />
@@ -78,17 +83,14 @@ class Options extends Component {
     }
   });
 
-  hideAndroidNavigationBar = () => Navigation.mergeOptions(this, {
-    navigationBar: {
-      visible: false
-    }
-  });
-
-  showAndroidNavigationBar = () => Navigation.mergeOptions(this, {
-    navigationBar: {
-      visible: true
-    }
-  });
+  toggleAndroidNavigationBar = () => {
+    this.setState({isAndroidNavigationBarVisible: !this.state.isAndroidNavigationBarVisible});
+    Navigation.mergeOptions(this, {
+      navigationBar: {
+        visible: !this.state.isAndroidNavigationBarVisible
+      }
+    })
+  };
 
   push = () => Navigation.push(this, {
     component: {
