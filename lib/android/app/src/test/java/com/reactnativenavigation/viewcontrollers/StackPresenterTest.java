@@ -86,7 +86,6 @@ public class StackPresenterTest extends BaseTest {
     private Button componentBtn2 = TitleBarHelper.reactViewButton("btn2_");
     private TopBarController topBarController;
     private ChildControllersRegistry childRegistry;
-    private IconResolver iconResolver;
 
     @Override
     public void beforeEach() {
@@ -98,8 +97,7 @@ public class StackPresenterTest extends BaseTest {
             }
         };
         renderChecker = spy(new RenderChecker());
-        iconResolver = new IconResolver(activity, ImageLoaderMock.mock());
-        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), iconResolver, renderChecker, new Options()));
+        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new IconResolver(activity, ImageLoaderMock.mock()), renderChecker, new Options()));
         createTopBarController();
 
         parent = TestUtils.newStackController(activity)
@@ -191,7 +189,7 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void mergeButtons() {
         uut.mergeChildOptions(EMPTY_OPTIONS, EMPTY_OPTIONS, parent, child);
-        verify(topBar, times(0)).setRightButtons(any());
+        verify(topBar, times(0)).setRightButtons(any(), any());
         verify(topBar, times(0)).setLeftButtons(any());
 
         Options options = new Options();
@@ -200,7 +198,7 @@ public class StackPresenterTest extends BaseTest {
         button.text = new Text("btn");
         options.topBar.buttons.right = new ArrayList<>(Collections.singleton(button));
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
-        verify(topBar, times(1)).setRightButtons(any());
+        verify(topBar, times(1)).setRightButtons(any(), any());
 
         options.topBar.buttons.left = new ArrayList<>();
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
@@ -369,7 +367,7 @@ public class StackPresenterTest extends BaseTest {
 
         uut.applyChildOptions(options, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar).setRightButtons(rightCaptor.capture());
+        verify(topBar).setRightButtons(rightCaptor.capture(), any());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(options.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(1).getButton().color.get()).isEqualTo(options.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
@@ -414,7 +412,7 @@ public class StackPresenterTest extends BaseTest {
 
         uut.mergeChildOptions(options2, appliedOptions, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar, times(1)).setRightButtons(rightCaptor.capture());
+        verify(topBar, times(1)).setRightButtons(rightCaptor.capture(), any());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(1).getButton().color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
@@ -446,7 +444,7 @@ public class StackPresenterTest extends BaseTest {
 
         uut.mergeChildOptions(options2, resolvedOptions, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar).setRightButtons(rightCaptor.capture());
+        verify(topBar).setRightButtons(rightCaptor.capture(), any());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(1).getButton().color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
@@ -467,7 +465,7 @@ public class StackPresenterTest extends BaseTest {
 
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
         ArgumentCaptor<List<TitleBarButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar).setRightButtons(rightCaptor.capture());
+        verify(topBar).setRightButtons(rightCaptor.capture(), any());
         verify(topBar).setLeftButtons(leftCaptor.capture());
 
         assertThat(rightCaptor.getValue().size()).isOne();
