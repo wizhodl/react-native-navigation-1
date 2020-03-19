@@ -54,7 +54,7 @@
 			instance = [[ReactNativeNavigation alloc] init];
 		}
 	});
-	
+
 	return instance;
 }
 
@@ -68,7 +68,7 @@
 
 - (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate {
 	UIWindow* mainWindow = [self initializeKeyWindow];
-	
+
 	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate mainWindow:mainWindow];
 	[RNNSplashScreen showOnWindow:mainWindow];
 }
